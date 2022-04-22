@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router";
+import "./App.css";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Products from "./components/Products";
+import Cart from "./components/Cart";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+import { BooksProvider } from './BooksContext';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BooksProvider>
+      <CssBaseline />
+      <Container maxWidth='xl'>
+        <Box sx={{ height: "100vh" }}>
+          <Typography align='center' variant='h3' component='div' gutterBottom>
+            Shopping Cart
+          </Typography>
+          <Routes>
+            <Route path='/' element={<Products />} />
+            <Route path='cart' element={<Cart />} />
+          </Routes>
+        </Box>
+      </Container>
+    </BooksProvider>
   );
 }
 
