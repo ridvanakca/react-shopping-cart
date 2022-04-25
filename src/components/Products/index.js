@@ -52,10 +52,10 @@ function Products() {
       </Box>
 
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ sm: 8, md: 12, lg: 15 }}>
           {context.bookList &&
             context.bookList.map((book) => (
-              <Grid key={book.id} item xs={4} sm={8} md={4}>
+              <Grid key={book.id} item sm={8} md={6} lg={5}>
                 <Card sx={{ display: "flex" }}>
                   <CardMedia component='img' sx={{ width: 150, padding: 1 }} src={book.image} alt={book.name} />
                   <Box sx={{ display: "flex", flexDirection: "column", paddingLeft: 2 }}>

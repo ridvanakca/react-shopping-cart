@@ -1,11 +1,15 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { books } from "./data";
 
 const BooksContext = createContext();
 
 const BooksProvider = ({ children }) => {
-  const [bookList, setBookList] = useState(books);
+  const [bookList, setBookList] = useState(() => JSON.parse(localStorage.getItem("data")) ?? []);
   const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem("data", JSON.stringify(books));
+  }, [bookList]);
 
   const addToCart = (book) => {
     const existingBook = cart.find((cartItem) => cartItem.id === book.id);
@@ -45,7 +49,7 @@ const BooksProvider = ({ children }) => {
     decreaseProductCount: decreaseProductCount,
     removeFromCart: removeFromCart,
     sumOfBooksPrice: sumOfBooksPrice,
-    totalProductsCount: totalProductsCount
+    totalProductsCount: totalProductsCount,
   };
 
   return <BooksContext.Provider value={value}>{children}</BooksContext.Provider>;
