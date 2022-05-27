@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -10,18 +10,20 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { BooksContext } from "../../BooksContext";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../../features/cart/cartSlice";
 
-function Products() {
-  const context = useContext(BooksContext);
-  console.log(context);
+function Products({ bookList }) {
 
   const [open, setOpen] = useState(false);
 
+  const { count } = useSelector((store) => store.cart);
+  const dispatch = useDispatch();
+
   const handleAddClick = (book) => {
     setOpen(true);
-    context.addToCart(book);
+    dispatch(addToCart(book));
   };
 
   const handleClose = (event, reason) => {
@@ -47,14 +49,14 @@ function Products() {
           Book List
         </Typography>
         <Link to='/cart' style={{ fontSize: "1.5rem" }}>
-          Cart ({context.totalProductsCount()})
+          Cart ({count})
         </Link>
       </Box>
 
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ sm: 8, md: 12, lg: 15 }}>
-          {context.bookList &&
-            context.bookList.map((book) => (
+          {bookList &&
+            bookList.map((book) => (
               <Grid key={book.id} item sm={8} md={6} lg={5}>
                 <Card sx={{ display: "flex" }}>
                   <CardMedia component='img' sx={{ width: 150, padding: 1 }} src={book.image} alt={book.name} />

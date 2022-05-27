@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,12 +8,15 @@ import Stack from "@mui/material/Stack";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
-import { BooksContext } from "../../BooksContext";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { decreaseProductCount, increaseProductCount, removeFromCart } from "../../features/cart/cartSlice";
 
 function Cart() {
-  const context = useContext(BooksContext);
-  console.log("cart", context.cart);
+
+  const { cart, total, count } = useSelector((store) => store.cart);
+  const dispatch = useDispatch();
+
 
   return (
     <div>
@@ -23,16 +25,16 @@ function Cart() {
           Book List
         </Link>
         <Typography variant='h4' gutterBottom>
-          Cart ({context.totalProductsCount()})
+          Cart ({count})
         </Typography>
       </Box>
 
       <Typography variant='h6' mb={2}>
-        Total Amount: &#8378;{context.sumOfBooksPrice()}
+        Total Amount: &#8378;{total}
       </Typography>
 
-      {context.cart &&
-        context.cart.map((cartItem) => (
+      {cart &&
+        cart.map((cartItem) => (
           <Card key={cartItem.id} sx={{ display: "flex" }}>
             <CardMedia component='img' sx={{ width: 150, padding: 1 }} src={cartItem.image} alt={cartItem.name} />
             <Box sx={{ display: "flex", flexDirection: "column", paddingLeft: 2 }}>
@@ -53,13 +55,13 @@ function Cart() {
                   There is a total of {cartItem.count} of this product in your cart.
                 </Typography>
                 <Stack direction='row' spacing={1} mt={1}>
-                  <IconButton onClick={() => context.decreaseProductCount(cartItem.id)} color='primary' aria-label='add to shopping cart' disabled={cartItem.count === 1}>
+                  <IconButton onClick={() => dispatch(decreaseProductCount(cartItem.id))} color='primary' aria-label='add to shopping cart' disabled={cartItem.count === 1}>
                     <RemoveIcon />
                   </IconButton>
-                  <Button onClick={() => context.removeFromCart(cartItem.id)} size='small' variant='outlined' disabled={cartItem.count !== 1}>
+                  <Button onClick={() => dispatch(removeFromCart(cartItem.id))} size='small' variant='outlined' disabled={cartItem.count !== 1}>
                     Remove from Cart
                   </Button>
-                  <IconButton onClick={() => context.increaseProductCount(cartItem.id)} color='primary' aria-label='add to shopping cart'>
+                  <IconButton onClick={() => dispatch(increaseProductCount(cartItem.id))} color='primary' aria-label='add to shopping cart'>
                     <AddIcon />
                   </IconButton>
                 </Stack>
